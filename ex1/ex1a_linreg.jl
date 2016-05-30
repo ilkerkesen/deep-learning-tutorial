@@ -1,8 +1,9 @@
-# Linear Regression applied to Housing Prices Data
+push!(LOAD_PATH, ".")
 
+# Linear Regression applied to Housing Prices Data
 using Gadfly
-include("linear_regression.jl")
 importall linear_regression
+importall optimization
 
 println("Reading data...")
 data = float(open(readdlm, "housing.data"))
@@ -30,7 +31,7 @@ min_err = 0.0001
 
 # training
 println("Training data...")
-tic();theta = gradient_descent(X_train, y_train, alpha, max_iter, min_err);toc()
+tic();theta = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err);toc()
 
 ms = collect(1:m_test)
 y_pred = theta * X_test
@@ -38,8 +39,8 @@ sorted = sortperm(y_test[:])
 
 # plotting
 plot(
-    layer(x=ms, y=y_test[sorted], Geom.point, Theme(default_color=color("green"))),
-    layer(x=ms, y=y_pred[sorted], Geom.point, Theme(default_color=color("red"))),
+    layer(x=ms, y=y_test[sorted], Geom.point, Theme(default_color=colorant"green")),
+    layer(x=ms, y=y_pred[sorted], Geom.point, Theme(default_color=colorant"red")),
     Guide.XLabel("House"),
     Guide.YLabel("Price"),
     Guide.Title("Housing Prices"),
