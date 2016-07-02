@@ -1,2 +1,2 @@
-# deep-learning-tutorial
-Stanford's Deep Learning Tutorial with Julia
+# ufldl-tutorial
+Stanford's Unsupervised Feature Learning and Deep Learning Tutorial with Julia
