@@ -17,7 +17,7 @@ function gradient_descent(h, J, X, y, alpha, max_iter, min_err, K=1)
         else
             hh = h(theta, X)
             for k = 1:K
-                theta[:,k] -= alpha * (1/m) * X[:,idx[k]] * (1 - hh[K,:][idx[k]])
+                theta[:,k] -= alpha * (1/m) * X[:,idx[k]] * (1 - hh[k,:][idx[k]])
             end
         end
         hold = cost

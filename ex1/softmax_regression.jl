@@ -1,5 +1,4 @@
 module softmax_regression
-using Debug
 export h, J
 
 function h(theta, X)
