@@ -2,7 +2,7 @@ module logistic_regression
 export sigmoid, h, J, accuracy
 
 sigmoid(z) = 1 ./ (1 + exp(-z))
-h(theta, X) = sigmoid(theta * X)
+h(theta, X) = sigmoid(theta' * X)
 
 function J(theta, X, y)
     hh = h(theta, X)

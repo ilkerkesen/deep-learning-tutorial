@@ -34,7 +34,7 @@ println("Training data...")
 tic();theta = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err);toc()
 
 ms = collect(1:m_test)
-y_pred = theta * X_test
+y_pred = theta' * X_test
 sorted = sortperm(y_test[:])
 
 # plotting
