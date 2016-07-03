@@ -20,13 +20,17 @@ filt_train, filt_test =  y_train .< 2.0, y_test .< 2.0
 X_train, y_train = X_train[:,filt_train], y_train[filt_train]
 X_test, y_test = X_test[:,filt_test], y_test[filt_test]
 
+# add ones as bias to feature vectors
+X_train = [ones(1, size(X_train, 2)); X_train]
+X_test = [ones(1, size(X_test, 2)); X_test]
+
 # transpose results arrays
 y_train, y_test = y_train', y_test'
 
 # training
 println("Training...")
 tic()
-theta = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err, 2)
+theta, history = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err)
 toc()
 score = accuracy(theta, X_test, y_test)
 println("test accuracy: ", score)

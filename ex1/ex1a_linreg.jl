@@ -31,7 +31,9 @@ min_err = 0.0001
 
 # training
 println("Training data...")
-tic();theta = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err);toc()
+tic()
+theta, history = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err)
+toc()
 
 ms = collect(1:m_test)
 y_pred = theta' * X_test

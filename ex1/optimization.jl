@@ -1,31 +1,41 @@
 module optimization
 export gradient_descent
 
-function gradient_descent(h, J, X, y, alpha, max_iter, min_err, K=1)
+function gradient_descent(h, J, X, y, alpha, max_iter, min_diff, K=1, debug=true)
     n, m = size(X)
-    theta = zeros(n, K)
+    theta = rand(n, K) * 0.001
     cost = J(theta, X, y)
 
     if K > 1
         idx = map(k -> find(i -> i== k, y), 1:K)
     end
 
-    err, iter = Inf, 0
-    while iter <= max_iter && err > min_err
+    history = []
+    diff, iter = Inf, 1
+    cost = J(theta, X, y)
+    while iter <= max_iter && diff > min_diff
         if K == 1
-            theta -= alpha * (1/m) * X * (h(theta, X) - y)'
+            grad = alpha * (1/m) * X * (h(theta, X) - y)'
         else
             hh = h(theta, X)
+            grad = zeros(size(theta))
             for k = 1:K
-                theta[:,k] -= alpha * (1/m) * X[:,idx[k]] * (1 - hh[k,:][idx[k]])
+                grad[:, k] = alpha * (1/m) * X[:, idx[k]] * (1 - hh[k, :][idx[k]])
             end
         end
+
+        theta -= grad
         hold = cost
         cost = J(theta, X, y)
-        err = abs(cost - hold)
+        diff = abs(cost - hold)
+
+        if debug
+            push!(history, (iter, theta, cost, diff, grad))
+            println("Iter #", iter, " ", cost, " ", diff)
+        end
+
         iter += 1
-        println(iter)
     end
-    return theta
+    return (theta, history)
 end
 end
