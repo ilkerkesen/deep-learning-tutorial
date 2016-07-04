@@ -3,8 +3,9 @@ export gradient_descent
 
 function gradient_descent(h, J, X, y, alpha, max_iter, min_diff, K=1, debug=true)
     n, m = size(X)
-    theta = rand(n, K) * 0.001
+    theta = rand(n, K) * 0.005
     cost = J(theta, X, y)
+    grad = zeros(size(theta))
 
     if K > 1
         idx = map(k -> find(i -> i== k, y), 1:K)
@@ -15,12 +16,11 @@ function gradient_descent(h, J, X, y, alpha, max_iter, min_diff, K=1, debug=true
     cost = J(theta, X, y)
     while iter <= max_iter && diff > min_diff
         if K == 1
-            grad = alpha * (1/m) * X * (h(theta, X) - y)'
+            grad = (1/m) * X * (h(theta, X) - y)'
         else
             hh = h(theta, X)
-            grad = zeros(size(theta))
             for k = 1:K
-                grad[:, k] = alpha * (1/m) * X[:, idx[k]] * (1 - hh[k, :][idx[k]])
+                grad[:, k] = -alpha * (1/m) * X[:, idx[k]] * (1 - hh[k, :][idx[k]])
             end
         end
 
@@ -31,7 +31,7 @@ function gradient_descent(h, J, X, y, alpha, max_iter, min_diff, K=1, debug=true
 
         if debug
             push!(history, (iter, theta, cost, diff, grad))
-            println("Iter #", iter, " ", cost, " ", diff)
+            println("Iter #", iter, " ", cost, " ", diff, " ", maximum(abs(grad)))
         end
 
         iter += 1

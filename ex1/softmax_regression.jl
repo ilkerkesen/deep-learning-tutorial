@@ -3,7 +3,7 @@ export h, J, predict, accuracy
 
 function h(theta, X)
     mat = exp(theta' * X)
-    return (1/sum(mat)) .* mat
+    return (1 ./ sum(mat, 1)) .* mat
 end
 
 function J(theta, X, y)
