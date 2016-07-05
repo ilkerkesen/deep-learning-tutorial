@@ -1,13 +1,15 @@
 # Logistic Regression with Gradient Descent applied to MNIST Dataset
 
 push!(LOAD_PATH, ".")
+push!(LOAD_PATH, "../common")
+
 using MNIST
 importall logistic_regression
 importall optimization
 
 # parameters
-alpha = 0.000001
-max_iter = 2000
+alpha = 0.00001
+max_iter = 100
 min_err = 0.0001
 
 # load MNIST data
@@ -20,17 +22,22 @@ filt_train, filt_test =  y_train .< 2.0, y_test .< 2.0
 X_train, y_train = X_train[:,filt_train], y_train[filt_train]
 X_test, y_test = X_test[:,filt_test], y_test[filt_test]
 
-# add ones as bias to feature vectors
-X_train = [ones(1, size(X_train, 2)); X_train]
-X_test = [ones(1, size(X_test, 2)); X_test]
+# add ones as bias to feature vectors, feature scaling
+X_train = [255*ones(1, size(X_train, 2)); X_train] / 255
+X_test = [255*ones(1, size(X_test, 2)); X_test] / 255
 
 # transpose results arrays
 y_train, y_test = y_train', y_test'
 
+# theta initialization
+theta = init_theta(size(X_train, 1))
+
 # training
 println("Training...")
 tic()
-theta, history = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err)
+theta, history = gradient_descent(h, J, grad, X_train, y_train, theta,
+                                  alpha, max_iter, min_err)
 toc()
-score = accuracy(theta, X_test, y_test)
-println("test accuracy: ", score)
+
+println("train accuracy: ", accuracy(theta, X_train, y_train))
+println("test accuracy: ", accuracy(theta, X_test, y_test))

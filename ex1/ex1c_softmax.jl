@@ -1,13 +1,15 @@
 # Softmax Regression/Gradient Descent applied to MNIST Dataset
 
 push!(LOAD_PATH, ".")
+push!(LOAD_PATH, "../common")
+
 using MNIST
 importall softmax_regression
 importall optimization
 
 # parameters
-alpha = 0.1
-max_iter = 500
+alpha = 0.00001
+max_iter = 20
 min_err = 0.000001
 
 # load MNIST data
@@ -26,7 +28,14 @@ y_test = y_test .+ 1
 y_train = convert(Array{Int64}, y_train)
 y_test = convert(Array{Int64}, y_test)
 
+# theta initialization
+theta = init_theta(size(X_train, 1), 10)
+
 println("Training...")
 tic()
-theta, history = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err, 10)
+theta, history = gradient_descent(h, J, g(10, y_train), X_train, y_train,
+                                  theta, alpha, max_iter, min_err)
 toc()
+
+println("train accuracy: ", accuracy(predict(theta, X_train), y_train))
+println("test accuracy: ", accuracy(predict(theta, X_test), y_test))

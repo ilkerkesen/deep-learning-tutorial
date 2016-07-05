@@ -1,9 +1,16 @@
-push!(LOAD_PATH, ".")
-
 # Linear Regression applied to Housing Prices Data
+
+push!(LOAD_PATH, ".")
+push!(LOAD_PATH, "../common/")
+
 using Gadfly
 importall linear_regression
 importall optimization
+
+# parameters
+alpha = 0.0001
+max_iter = 100
+min_err = 0.0001
 
 println("Reading data...")
 data = float(open(readdlm, "housing.data"))
@@ -25,14 +32,19 @@ y_train = data[end,1:m_train]
 X_test = data[1:n, m_train+1:end]
 y_test = data[end, m_train+1:end]
 
-alpha = 0.000001
-max_iter = 10000
-min_err = 0.0001
+# mean normalization
+u = mean([X_train X_test], 2)
+X_train = X_train ./ u
+X_test = X_test ./ u
+
+# theta initialization
+theta = init_theta(size(X_train, 1))
 
 # training
 println("Training data...")
 tic()
-theta, history = gradient_descent(h, J, X_train, y_train, alpha, max_iter, min_err)
+theta, history = gradient_descent(h, J, grad, X_train, y_train, theta,
+                                  alpha, max_iter, min_err)
 toc()
 
 ms = collect(1:m_test)
