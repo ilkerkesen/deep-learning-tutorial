@@ -7,25 +7,22 @@ function h(theta, X)
 end
 
 function J(theta, X, y)
-    hh = log10(h(theta, X))
+    hh = h(theta, X)
     K, m = size(hh)
     I = sub2ind((K,m), collect(y), 1:m)
-    return -sum(hh[I])
+    return -sum(log(hh[I]))/m
 end
 
-init_theta(n, K) = rand(n, K) * 0.001
+init_theta(n, K) = randn(n, K) * 0.01
 
 function g(K, y)
     idx = map(k -> find(i -> i == k, y), 1:K)
     function grad(theta, X, y)
         hh = h(theta, X)
-        gg = zeros(size(theta))
-
-        for k = 1:K
-            gg[:, k] = -X[:, idx[k]] * (1 - hh[k, :][idx[k]])
-        end
-
-        return gg
+        K, m = size(hh)
+        I = sub2ind((K,m), collect(y), 1:m)
+        hh[I] -= 1
+        return (X * hh') / m
     end
 
     return grad

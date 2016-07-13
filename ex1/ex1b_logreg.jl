@@ -8,7 +8,7 @@ importall logistic_regression
 importall optimization
 
 # parameters
-alpha = 0.00001
+alpha = 0.2
 max_iter = 100
 min_err = 0.0001
 

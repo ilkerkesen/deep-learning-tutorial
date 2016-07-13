@@ -8,9 +8,9 @@ importall linear_regression
 importall optimization
 
 # parameters
-alpha = 0.0001
+alpha = 0.1
 max_iter = 100
-min_err = 0.0001
+min_err = 0.0
 
 println("Reading data...")
 data = float(open(readdlm, "housing.data"))

@@ -8,9 +8,9 @@ importall softmax_regression
 importall optimization
 
 # parameters
-alpha = 0.00001
-max_iter = 20
-min_err = 0.000001
+alpha = 0.2
+max_iter = 200
+min_err = 0.0
 
 # load MNIST data
 println("Loading MNIST dataset...")
