@@ -5,11 +5,11 @@ function gradient_descent(h, J, g, X, y, A, alpha, max_iter, min_diff, debug=tru
     n, m = size(X)
     grad = zeros(size(A))
     history = []
-    diff, iter = Inf, 1
+    diff, iter = Inf, 0
     cost = J(A, X, y)
     prev = Inf
 
-    while iter <= max_iter && diff > min_diff && cost < prev
+    while iter < max_iter && diff > min_diff && cost < prev
         grad = g(A, X, y)
         A -= alpha * grad
         prev = cost
@@ -18,13 +18,12 @@ function gradient_descent(h, J, g, X, y, A, alpha, max_iter, min_diff, debug=tru
 
         if debug
             push!(history, (iter, A, cost, diff, grad))
-            if iter % 1 == 0
-                println("Iter #", iter, " ", cost, " ", diff, " ", maximum(abs(grad)))
-            end
+            println("Iter #", iter+1, ", J = ", cost)
         end
 
         iter += 1
     end
-    return (A, history)
+
+    return (A, history, iter)
 end
 end

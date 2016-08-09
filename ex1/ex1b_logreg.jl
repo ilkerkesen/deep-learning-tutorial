@@ -8,8 +8,8 @@ importall logistic_regression
 importall optimization
 
 # parameters
-alpha = 0.2
-max_iter = 100
+alpha = 0.5
+max_iter = 20
 min_err = 0.0001
 
 # load MNIST data

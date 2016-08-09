@@ -8,8 +8,8 @@ importall softmax_regression
 importall optimization
 
 # parameters
-alpha = 0.2
-max_iter = 200
+alpha = 0.5
+max_iter = 20
 min_err = 0.0
 
 # load MNIST data
